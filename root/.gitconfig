@@ -1,0 +1,12 @@
+[user]
+	name = jaborandi
+	email = support@excsitement.com
+[push]
+	default = simple
+[format]
+	pretty = "%h %s [%ar]"
+[core]
+	mergeoptions = --no-edit
+	fileMode = false
+[init]
+	templatedir = "~/.git_template"
