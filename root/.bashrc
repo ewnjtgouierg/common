@@ -14,7 +14,8 @@ export LANG=en_GB.UTF-8
 export PHPRC=/etc/php.ini
 
 if [ "$(shopt login_shell | xargs)" = "login_shell on" ] ; then
-	[ -s ~/.lastdirectory ] && cd `cat ~/.lastdirectory`
+	trap "pwd > ~/.current_dir" EXIT
+	cd $(cat ~/.current_dir)
 else
 	startDir="$(p /editor/cli-starting-directory)"
 	cd ${startDir}
