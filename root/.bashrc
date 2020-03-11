@@ -28,4 +28,6 @@ fi
 if xhost >& /dev/null ; then	#display is set = xterm
 	export HISTFILE=
 	export PROMPT_COMMAND='echo $(history 1 | cut -d" " -f4-) >> /var/log/cmd/cmd.log;'
+else
+	export MANPAGER='col -b'
 fi
