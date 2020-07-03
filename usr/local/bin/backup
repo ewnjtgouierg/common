@@ -3,9 +3,12 @@
 
 include __DIR__ . '/backup.cfg';
 
+$verbose = $_SERVER['argv'][1] == '-v';
+if ($verbose) $verbose = '-v';
+
 function cmd($cmd)
 	{
-		if ($_SERVER['argv'][1] == '-v') passthru($cmd);
+		if ($verbose) passthru($cmd);
 		else exec($cmd);
 	}
 
@@ -21,4 +24,4 @@ foreach ($cfg['sites'] as $site)
 
 cmd("rclone copy /backup $cfg[remote]/db");
 
-exec("rclone copy /var/www $cfg[remote]/www");
+cmd("rclone copy $verbose --skip-links --exclude .git/ /var/www $cfg[remote]/www");
