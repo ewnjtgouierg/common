@@ -1,0 +1,24 @@
+#!/usr/local/bin/php
+<?
+
+include __DIR__ . '/backup.cfg';
+
+function cmd($cmd)
+	{
+		if ($_SERVER['argv'][1] == '-v') passthru($cmd);
+		else exec($cmd);
+	}
+
+foreach ($cfg['sites'] as $site)
+	{
+		cmd("cd /var/www/$site && commit \"$(date)\" && git push -u origin master");
+		$db = str_replace('.', '_', $site);
+		$dbBackupPath = "/backup/$db.".date('Y-n-d.G-i').'.sql';
+		$zip = "$dbBackupPath.zip";
+		cmd("mysqldump $db > $dbBackupPath");
+		cmd("zip -m $zip $dbBackupPath");
+	}
+
+cmd("rclone copy /backup $cfg[remote]/db");
+
+exec("rclone copy /var/www $cfg[remote]/www");
