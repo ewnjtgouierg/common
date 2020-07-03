@@ -1,0 +1,19 @@
+#!/usr/local/bin/php
+<?
+
+if ($_SERVER['argv'][1] !== 'confirm') exit("to run restore please use this command:
+
+restore confirm
+
+");
+
+foreach (scandir($www = '/var/www') as $site)
+	if (strlen(trim($site, '.')))
+		{
+			$dir = "$www/$site";
+			exec("cd $dir && git pull");
+			echo "\n";
+			$db = str_replace('.', '_', $site);
+			exec("cd /bcup/$db && git pull && cat *.sql | mysql $db");
+			echo "\n";
+		}
