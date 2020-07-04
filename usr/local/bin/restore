@@ -44,8 +44,9 @@ foreach ($cfg['sites'] as $site)
 				else echo "not found";
 			}
 
-		echo "\n\n";
-
-		break;
+		if ($cfg['rclone']['www'] !== false)
+			passthru("rclone copy -v $cfg[remote]/www/wp-content/uploads /var/www/$site/wp-content");
 
 	}
+
+echo "\n\n";
