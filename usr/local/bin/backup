@@ -17,15 +17,18 @@ foreach ($modes as $mode)
 	if (in_array($mode, $_SERVER['argv'], true))
 		$specific[$mode] = true;
 
-foreach ($cfg['sites'] as $site)
+foreach ($cfg['sites'] as $t)
 	{
 
+		if (is_string($t)) $t = ['site' => $t];
+
+		$site = $t['site'];
 		if (!$specific || $specific['scripts'] || $specific['git'])
 			cmd("cd /var/www/$site && commit \"$(date)\" && git push -u origin master");
 
 		if (!$specific || $specific['db'])
 			{
-				$db = str_replace('.', '_', $site);
+				$db = $t['db']  ?? str_replace('.', '_', $site);
 				$dbBackupPath = "/backup/$db.".date('Y-n-d.G-i').'.sql';
 				$zip = "$dbBackupPath.zip";
 
@@ -35,7 +38,12 @@ foreach ($cfg['sites'] as $site)
 
 		if ($cfg['rclone']['www'] !== false)
 				if (!$specific || $specific['uploads'] || $specific['upload'])
-			cmd("rclone copy $verbose --skip-links /var/www/$site/wp-content/uploads $cfg[remote]/www/$site/wp-content/uploads");
+					{
+						if (!$cfg['notWP']) $t['rclone'] = ['wp-content/uploads'];
+						$remote = $t['rcloneTarget'] ?? $cfg['remote'];
+						foreach ($t['rclone'] as $path)
+							cmd("rclone copy $verbose --skip-links /var/www/$site/$path $remote/www/$site/$path");
+					}
 
 	}
 
