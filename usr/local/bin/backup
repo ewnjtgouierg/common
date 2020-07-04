@@ -19,7 +19,7 @@ foreach ($cfg['sites'] as $site)
 		$dbBackupPath = "/backup/$db.".date('Y-n-d.G-i').'.sql';
 		$zip = "$dbBackupPath.zip";
 		cmd("mysqldump $db > $dbBackupPath");
-		cmd("zip -m $zip $dbBackupPath");
+		cmd("zip -mj $zip $dbBackupPath");
 	}
 
 cmd("rclone copy /backup $cfg[remote]/db");
