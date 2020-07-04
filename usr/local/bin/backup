@@ -3,7 +3,7 @@
 
 include __DIR__ . '/backup.cfg';
 
-$verbose = $_SERVER['argv'][1] == '-v';
+$verbose = in_array('-v', $_SERVER['argv'], true);
 if ($verbose) $verbose = '-v';
 
 function cmd($cmd)
@@ -12,18 +12,32 @@ function cmd($cmd)
 		else exec($cmd);
 	}
 
+$modes = ['scripts', 'db', 'uploads', 'upload', 'git'];
+foreach ($modes as $mode)
+	if (in_array($mode, $_SERVER['argv'], true))
+		$specific[$mode] = true;
+
 foreach ($cfg['sites'] as $site)
 	{
-		cmd("cd /var/www/$site && commit \"$(date)\" && git push -u origin master");
-		$db = str_replace('.', '_', $site);
-		$dbBackupPath = "/backup/$db.".date('Y-n-d.G-i').'.sql';
-		$zip = "$dbBackupPath.zip";
-		cmd("mysqldump $db > $dbBackupPath");
-		cmd("zip -mj $zip $dbBackupPath");
+
+		if (!$specific || $specific['scripts'] || $specific['git'])
+			cmd("cd /var/www/$site && commit \"$(date)\" && git push -u origin master");
+
+		if (!$specific || $specific['db'])
+			{
+				$db = str_replace('.', '_', $site);
+				$dbBackupPath = "/backup/$db.".date('Y-n-d.G-i').'.sql';
+				$zip = "$dbBackupPath.zip";
+
+				cmd("mysqldump $db > $dbBackupPath");
+				cmd("zip -mj $zip $dbBackupPath");
+			}
 
 		if ($cfg['rclone']['www'] !== false)
-			cmd("rclone copy $verbose --skip-links /var/www/$site/wp-content/uploads $cfg[remote]/www/$site/wp-content");
+				if (!$specific || $specific['uploads'] || $specific['upload'])
+			cmd("rclone copy $verbose --skip-links /var/www/$site/wp-content/uploads $cfg[remote]/www/$site/wp-content/uploads");
 
 	}
 
-cmd("rclone copy /backup $cfg[remote]/db");
+if (!$specific || $_SERVER['argv'][2]=='db')
+	cmd("rclone copy $verbose /backup $cfg[remote]/db");
