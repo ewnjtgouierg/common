@@ -24,4 +24,5 @@ foreach ($cfg['sites'] as $site)
 
 cmd("rclone copy /backup $cfg[remote]/db");
 
-cmd("rclone copy $verbose --skip-links --exclude .git/ /var/www $cfg[remote]/www");
+if ($cfg['rclone']['www'] !== false)
+	cmd("rclone copy $verbose --skip-links --exclude .git/ /var/www $cfg[remote]/www");
