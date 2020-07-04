@@ -44,7 +44,7 @@ foreach ($cfg['sites'] as $site)
 			}
 
 		if ($cfg['rclone']['www'] !== false)
-			passthru("rclone copy -v $cfg[remote]/www/wp-content/uploads /var/www/$site/wp-content");
+			passthru("rclone copy --retries 1 -v $cfg[remote]/www/$site/wp-content/uploads /var/www/$site/wp-content");
 
 	}
 
