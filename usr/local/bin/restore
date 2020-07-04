@@ -5,6 +5,12 @@ if ($_SERVER['argv'][1] !== 'confirm') exit("to run restore please use this comm
 
 restore confirm
 
+to restore only specific type of data, use:
+
+restore confirm git
+restore confirm db
+restore confirm uploads
+
 ");
 
 include __DIR__ . '/backup.cfg';
@@ -12,39 +18,48 @@ include __DIR__ . '/backup.cfg';
 foreach ($cfg['sites'] as $site)
 	{
 
-		echo "\n\n$site - updating site scripts from git";
-
-		passthru("cd /var/www/$site && git pull");
-
-		$db = str_replace('.', '_', $site);
-		$time = time();
-
-		echo "\n\n$site: searching for the latest db backup";
-
-		for ($i=0; $i<5; $i++)
+		if (!$_SERVER['argv'][2] || $_SERVER['argv'][2]=='scripts' || $_SERVER['argv'][2]=='git')
 			{
-				$date = date('Y-n-d', $time -= $i*24*60*60);
-				$pattern = "$db.$date.*";
-				$name = exec("rclone lsf --filter '+ $pattern' --filter '- *' $cfg[remote]/db", $out, $val);
-				echo "\n$date - ";
-				if (!$val && $name)
+				echo "\n\n$site - updating site scripts from git\n";
+				passthru("cd /var/www/$site && git pull");
+			}
+
+		if (!$_SERVER['argv'][2] || $_SERVER['argv'][2]=='db')
+			{
+				$db = str_replace('.', '_', $site);
+				$time = time();
+		
+				echo "\n\n$site: searching for the latest db backup\n";
+	
+				for ($i=0; $i<5; $i++)
 					{
-						echo "found $name";
-						$zipPath = "/tmp/$name";
-						$sqlPath = pathinfo($zipPath)['filename'];
-						passthru("rclone copy $cfg[remote]/db/$name /tmp");
-						chdir('/tmp');
-						passthru("unzip $name");
-						passthru("mysql $db < $sqlPath");
-						passthru("rm $zipPath");
-						passthru("rm $sqlPath");
-						break;
+						$date = date('Y-n-d', $time -= $i*24*60*60);
+						$pattern = "$db.$date.*";
+						$name = exec("rclone lsf --filter '+ $pattern' --filter '- *' $cfg[remote]/db", $out, $val);
+						echo "\n$date - ";
+						if (!$val && $name)
+							{
+								echo "found $name";
+								$zipPath = "/tmp/$name";
+								$sqlPath = pathinfo($zipPath)['filename'];
+								passthru("rclone copy $cfg[remote]/db/$name /tmp");
+								chdir('/tmp');
+								passthru("unzip $name");
+								passthru("mysql $db < $sqlPath");
+								passthru("rm $zipPath");
+								passthru("rm $sqlPath");
+								break;
+							}
+						else echo "not found";
 					}
-				else echo "not found";
 			}
 
 		if ($cfg['rclone']['www'] !== false)
-			passthru("rclone copy --retries 1 -v $cfg[remote]/www/$site/wp-content/uploads /var/www/$site/wp-content");
+			if (!$_SERVER['argv'][2] || $_SERVER['argv'][2]=='uploads' || $_SERVER['argv'][2]=='upload')
+				{
+					echo "\n\n$site: updating wp-content/uploads\n";
+					passthru("rclone copy --retries 1 -v $cfg[remote]/www/$site/wp-content/uploads /var/www/$site/wp-content/uploads");
+				}
 
 	}
 
