@@ -20,9 +20,10 @@ foreach ($cfg['sites'] as $site)
 		$zip = "$dbBackupPath.zip";
 		cmd("mysqldump $db > $dbBackupPath");
 		cmd("zip -mj $zip $dbBackupPath");
+
+		if ($cfg['rclone']['www'] !== false)
+			cmd("rclone copy $verbose --skip-links /var/www/$site/wp-content/uploads $cfg[remote]/www/$site/wp-content");
+
 	}
 
 cmd("rclone copy /backup $cfg[remote]/db");
-
-if ($cfg['rclone']['www'] !== false)
-	cmd("rclone copy $verbose --skip-links --exclude .git/ /var/www $cfg[remote]/www");
