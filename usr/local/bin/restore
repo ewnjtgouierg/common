@@ -7,13 +7,45 @@ restore confirm
 
 ");
 
-foreach (scandir($www = '/var/www') as $site)
-	if (strlen(trim($site, '.')))
-		{
-			$dir = "$www/$site";
-			exec("cd $dir && git pull");
-			echo "\n";
-			$db = str_replace('.', '_', $site);
-			exec("cd /bcup/$db && git pull && cat *.sql | mysql $db");
-			echo "\n";
-		}
+include __DIR__ . '/backup.cfg';
+
+foreach ($cfg['sites'] as $site)
+	{
+
+		echo "\n\n$site - updating site scripts from git";
+
+		$dir = "$www/$site";
+		passthru("cd $dir && git pull");
+
+		$db = str_replace('.', '_', $site);
+		$time = time() + 24*60*60;
+
+		echo "\n\n$site: searching for the latest db backup";
+
+		for ($i=0; $i<5; $i++)
+			{
+				$date = date('Y-n-d', $time -= $i*24*60*60);
+				$pattern = "$db.$date.*";
+				$name = exec("rclone lsf --filter '+ $pattern' --filter '- *' $cfg[remote]/db", $out, $val);
+				echo "\n$date - ";
+				if (!$val && $name)
+					{
+						echo "found $name";
+						$zipPath = "/tmp/$name";
+						$sqlPath = pathinfo($zipPath)['filename'];
+						passthru("rclone copy $cfg[remote]/db/$name /tmp");
+						chdir('/tmp');
+						passthru("unzip $name");
+						passthru("mysql $db < $sqlPath");
+						passthru("rm $zipPath");
+						passthru("rm $sqlPath");
+						break;
+					}
+				else echo "not found";
+			}
+
+		echo "\n\n";
+
+		break;
+
+	}
