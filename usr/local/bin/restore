@@ -14,11 +14,10 @@ foreach ($cfg['sites'] as $site)
 
 		echo "\n\n$site - updating site scripts from git";
 
-		$dir = "$www/$site";
-		passthru("cd $dir && git pull");
+		passthru("cd /var/www/$site && git pull");
 
 		$db = str_replace('.', '_', $site);
-		$time = time() + 24*60*60;
+		$time = time();
 
 		echo "\n\n$site: searching for the latest db backup";
 
