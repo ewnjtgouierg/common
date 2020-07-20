@@ -4,7 +4,11 @@
 [push]
 	default = simple
 [format]
-	pretty = "%h %s [%ar]"
+	pretty = "%ad %h %s [%ar]"
+[alias]
+    re = reflog --pretty=reflog
+[pretty]
+	reflog = "%ar %h %gs"
 [core]
 	mergeoptions = --no-edit
 	fileMode = false
