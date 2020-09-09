@@ -3,12 +3,13 @@
 
 include __DIR__ . '/backup.cfg';
 
-$verbose = in_array('-v', $_SERVER['argv'], true);
-if ($verbose) $verbose = '-v';
+$verbose = in_array('-v', $_SERVER['argv'], true) ? '-v' : null;
+$dryRun = in_array('-n', $_SERVER['argv'], true);
 
 function cmd($cmd)
 	{
-		if ($verbose) passthru($cmd);
+		if ($GLOBALS['dryRun']) echo "$cmd\n";
+		elseif ($GLOBALS['verbose']) passthru($cmd);
 		else exec($cmd);
 	}
 
