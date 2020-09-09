@@ -44,4 +44,4 @@ if (!$specific || $_SERVER['argv'][2]=='db')
 	cmd("rclone copy $verbose /backup $cfg[remote]/db");
 
 $date = date('Y-n-d', time() - 30*24*60*60);
-cmd("cd backup && findo -not -newer $date -delete");
+cmd("cd /backup && findo -not -newer $date -delete");
