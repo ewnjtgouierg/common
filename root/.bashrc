@@ -1,5 +1,7 @@
 [ -z "$PS1" ] && return
 
+PS1='\u@\H:\w\$ '
+
 alias disks="lsblk -o LABEL,NAME,SIZE,MOUNTPOINT,FSTYPE"
 alias ls="ls -lah --time-style=full-iso"
 alias c="p ssh"
