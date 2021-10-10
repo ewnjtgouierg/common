@@ -7,6 +7,7 @@ alias tota="du -ch -x 2>/dev/null | grep total"
 alias giga="du -ch -x 2>/dev/null | grep -P [0-9]\+\(\.[0-9]\+\)G"
 alias mega="du -ch -x 2>/dev/null | grep -P [0-9]\{3,\}M"
 alias psc="ps -e -O %cpu --sort %cpu"
+alias drives="lshw -C disc -short 2>/dev/null"
 alias hiccup="p hiccup"
 alias g="git --git-dir=/.common"
 
