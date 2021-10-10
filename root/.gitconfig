@@ -12,5 +12,7 @@
 [core]
 	mergeoptions = --no-edit
 	fileMode = false
+	quotePath = false
+	pager = 
 [init]
 	templatedir = "~/.git_template"
