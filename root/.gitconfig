@@ -16,3 +16,5 @@
 	pager = 
 [init]
 	templatedir = "~/.git_template"
+[remote]
+	pushDefault = origin
