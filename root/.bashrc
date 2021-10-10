@@ -10,6 +10,7 @@ alias psc="ps -e -O %cpu --sort %cpu"
 alias drives="lshw -C disc -short 2>/dev/null"
 alias hiccup="p hiccup"
 alias g="git --git-dir=/.common"
+alias comemeet="commit --common"
 
 gh () {
 	p git/hub/$1 $2 $3
