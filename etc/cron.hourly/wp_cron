@@ -1,7 +1,0 @@
-#!/usr/local/bin/php
-<?
-
-include '/usr/local/bin/backup.cfg';
-
-foreach ($cfg['sites'] as $host)
-	exec("wget -q -O - http://$host/wp-cron.php?doing_wp_cron >/dev/null 2>&1");
