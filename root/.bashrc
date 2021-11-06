@@ -4,6 +4,7 @@ PS1='\u@\H:\w\$ '
 
 alias disks="lsblk -o LABEL,NAME,SIZE,MOUNTPOINT,FSTYPE"
 alias ls="ls -lah --time-style=full-iso"
+alias diff="diff --color=always"
 alias c="p ssh"
 alias tota="du -ch -x 2>/dev/null | grep total"
 alias giga="du -ch -x 2>/dev/null | grep -P [0-9]\+\(\.[0-9]\+\)?G"
