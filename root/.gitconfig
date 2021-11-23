@@ -18,3 +18,5 @@
 	templatedir = "~/.git_template"
 [remote]
 	pushDefault = origin
+[log]
+	date = format:%d-%m-%y %H:%M
