@@ -15,6 +15,9 @@ alias hiccup="p hiccup"
 alias g="git --git-dir=/.common"
 alias comemeet="commit --common"
 
+eval `ssh-agent -s`
+ssh-add
+
 gh () {
 	p git/hub/$1 $2 $3
 	}
