@@ -14,6 +14,7 @@ alias drives="lshw -C disc -short 2>/dev/null"
 alias hiccup="p hiccup"
 alias g="git --git-dir=/.common"
 alias comemeet="commit --common"
+alias git=/F/ulb/git
 
 eval `ssh-agent -s`
 ssh-add
