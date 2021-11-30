@@ -16,8 +16,10 @@ alias g="git --git-dir=/.common"
 alias comemeet="commit --common"
 alias git=/F/ulb/git-wrapper
 
-eval `ssh-agent -s`
-ssh-add
+if [ "$HOSTNAME" == "elan" ] ; then
+	eval `ssh-agent -s`
+	ssh-add
+fi
 
 gh () {
 	p git/hub/$1 $2 $3
