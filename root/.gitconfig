@@ -8,6 +8,8 @@
 [alias]
     re = reflog --pretty=reflog
 	lg = "!f() { git log --reverse --ancestry-path $1^..HEAD | head $2; }; f"
+	b = !git --git-dir=/.ecup --work-tree=/
+	c = !git --git-dir=/.common --work-tree=/
 [pretty]
 	reflog = "%ar %h %gs"
 [core]
