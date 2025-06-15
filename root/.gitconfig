@@ -23,3 +23,5 @@
 	pushDefault = origin
 [log]
 	date = format:%d-%m-%y %H:%M
+[safe]
+	directory = *
