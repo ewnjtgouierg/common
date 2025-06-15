@@ -25,3 +25,5 @@
 	date = format:%d-%m-%y %H:%M
 [safe]
 	directory = *
+[protocol "file"]
+	allow = always
