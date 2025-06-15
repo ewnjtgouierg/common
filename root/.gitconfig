@@ -4,7 +4,7 @@
 [push]
 	default = simple
 [format]
-	pretty = "%h %s [%ar]"
+	pretty = "%h %s [%ar]%x0D%x0A"
 [alias]
     re = reflog --pretty=reflog
 	lg = "!f() { git log --reverse --ancestry-path $1^..HEAD | head $2; }; f"
