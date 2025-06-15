@@ -23,6 +23,8 @@
 	pushDefault = origin
 [log]
 	date = format:%d-%m-%y %H:%M
+[merge]
+	conflictstyle = merge
 [safe]
 	directory = *
 [protocol "file"]
