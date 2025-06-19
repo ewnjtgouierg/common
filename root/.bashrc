@@ -34,7 +34,7 @@ if [ "$(shopt login_shell | xargs)" = "login_shell on" ] ; then
 	cd $(cat ~/.current_dir)
 else
 	startDir="$(p /editor/cli-starting-directory)"
-	cd ${startDir}
+	cd "${startDir}"
 fi
 
 if xhost >& /dev/null ; then	#display is set = xterm
