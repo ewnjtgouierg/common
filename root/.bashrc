@@ -2,7 +2,7 @@
 
 PS1='\u@\H:\w\$ '
 
-alias disks="lsblk -o LABEL,NAME,SIZE,MOUNTPOINT,FSTYPE"
+alias disks="lsblk -n -o name,mountpoint,label,size,uuid,fstype"
 alias ls="ls -lah --time-style=full-iso"
 alias diff="diff --color=always"
 alias c="p ssh"
