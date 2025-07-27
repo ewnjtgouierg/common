@@ -18,6 +18,14 @@ alias git=/F/ulb/git-wrapper
 alias time=/usr/bin/time
 alias d="ls /dev/disk/by-label"
 
+function stash() {
+    if [[ $@ == "pop" ]]; then
+        git stash pop && p git/timestamps/restore
+    else
+        p git/timestamps/save && git stash
+    fi
+}
+
 if [ "$HOSTNAME" == "elan" ] ; then
 	eval `ssh-agent -s`
 	ssh-add
