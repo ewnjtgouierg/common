@@ -42,8 +42,10 @@ if [ "$(shopt login_shell | xargs)" = "login_shell on" ] ; then
 	trap "pwd > ~/.current_dir" EXIT
 	cd $(cat ~/.current_dir)
 else
-	startDir="$(p /editor/cli-starting-directory)"
-	cd "${startDir}"
+	if [ -z "${DO_NOT_CD}" ]; then
+		startDir="$(p /editor/cli-starting-directory)"
+		cd "${startDir}"
+	fi
 fi
 
 if xhost >& /dev/null ; then	#display is set = xterm
