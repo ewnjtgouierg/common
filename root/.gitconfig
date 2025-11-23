@@ -21,6 +21,7 @@
 	pager = 
 [init]
 	templatedir = "~/.git_template"
+	defaultBranch = "master"
 [remote]
 	pushDefault = origin
 [log]
