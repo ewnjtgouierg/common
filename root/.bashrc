@@ -10,7 +10,7 @@ alias r="ssh 192.168.2.1"
 alias tota="du -ch -x 2>/dev/null | grep \"\stotal$\""
 alias giga="du -ch -x 2>/dev/null | grep -P ^[0-9]\+\(\.[0-9]\+\)?G"
 alias mega="du -ch -x 2>/dev/null | grep -P ^[0-9]\{3,\}M"
-alias psc="ps -e -O %cpu --sort %cpu"
+alias psca="ps -e -O pgid,%cpu --sort %cpu --cols=1024 | sed 's/$/\n/'"
 alias drives="lshw -C disc -short 2>/dev/null"
 alias hiccup="p hiccup"
 alias g="git --git-dir=/.common"
@@ -19,6 +19,11 @@ alias git=/F/ulb/git-wrapper
 alias time=/usr/bin/time
 alias d="ls /dev/disk/by-label"
 
+function psc()
+	{
+		ps -e -O pgid,%cpu --sort %cpu
+	}
+export -f psc
 function stash() {
     if [[ $@ == "pop" ]]; then
         git stash pop && p git/timestamps/restore
