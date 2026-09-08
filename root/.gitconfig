@@ -4,10 +4,12 @@
 [push]
 	default = simple
 [format]
-	pretty = "%h %s [%ar]%x0D%x0A"
+	pretty = "%h %s [%ad]%x0D%x0A"
+[log]
+	date = relative
 [alias]
     loga = log --pretty=format:\"%h [%ad %cd] %s\"
-
+	logd = log --date=format:'%Y-%m-%d %H:%M:%S'
     re = reflog --pretty=reflog
 	lg = "!f() { git log --reverse --ancestry-path $1^..HEAD | head $2; }; f"
 	b = !git --git-dir=/.ecup --work-tree=/
@@ -24,8 +26,6 @@
 	defaultBranch = "master"
 [remote]
 	pushDefault = origin
-[log]
-	date = format:%d-%m-%y %H:%M
 [merge]
 	conflictstyle = merge
 [safe]
