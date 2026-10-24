@@ -2,6 +2,8 @@
 
 PS1='\u@\H:\w\$ '
 
+export GLOBIGNORE='\?'
+
 alias disks="lsblk -n -o name,mountpoint,label,size,uuid,fstype"
 alias ls="ls -lah --time-style=full-iso"
 alias diff="diff --color=always"
