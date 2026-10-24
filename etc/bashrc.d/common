@@ -2,7 +2,7 @@
 
 PS1='\u@\H:\w\$ '
 
-export GLOBIGNORE='\?'
+export GLOBIGNORE='?'
 
 alias disks="lsblk -n -o name,mountpoint,label,size,uuid,fstype"
 alias ls="ls -lah --time-style=full-iso"
@@ -62,3 +62,4 @@ if xhost >& /dev/null ; then	#display is set = xterm
 else
 	export MANPAGER='col -b'
 fi
+
