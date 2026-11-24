@@ -8,7 +8,7 @@
 [log]
 	date = relative
 [alias]
-    loga = log --pretty=format:\"%h [%ad %cd] %s\"
+    loga = log --pretty=format:\"%h [%ad, %cd] %s\"
 	logd = log --date=format:'%Y-%m-%d %H:%M:%S'
     re = reflog --pretty=reflog
 	lg = "!f() { git log --reverse --ancestry-path $1^..HEAD | head $2; }; f"
